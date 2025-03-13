@@ -1,0 +1,21 @@
+from markdownify import MarkdownConverter
+import requests
+from bs4 import BeautifulSoup
+
+# Converting BeautifulSoup objects to Markdown
+def md(soup, **options):
+    return MarkdownConverter(**options).convert_soup(soup)
+
+def extract_h2_with_bs4(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        markdown = md(soup) 
+        return markdown
+    else:
+        return None
+
+url = "https://www.asus.com/tw/laptops/for-gaming/rog-republic-of-gamers/filter?SubSeries=ROG-Zephyrus"
+h2_contents_bs4 = extract_h2_with_bs4(url)
+print(h2_contents_bs4)
+
